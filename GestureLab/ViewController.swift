@@ -19,6 +19,9 @@ class ViewController: UIViewController {
     
     var trayStateTrueOpenFalseClose = true
     
+    var newlyCreatedFace: UIImageView!
+
+    
     @IBOutlet var trayView: UIView!
     
     
@@ -43,7 +46,8 @@ class ViewController: UIViewController {
         // Absolute (x,y) coordinates in parent view's coordinate system
         let point = panGestureRecognizer.locationInView(self.view)
         // Total translation (x,y) over time in parent view's coordinate system
-        let translation = panGestureRecognizer.translationInView(self.view)
+        
+        /*let translation = panGestureRecognizer.translationInView(self.view)*/ //This was used in base version for the translation.y
         
         if panGestureRecognizer.state == UIGestureRecognizerState.Began {
             //trayOriginalCenter = CGPoint(x: trayView.center.x, y: trayView.center.y)
@@ -57,7 +61,6 @@ class ViewController: UIViewController {
             if(direction > 0){ //if velocity.y is greater than 0 its pulling down
                 UIView.animateWithDuration(1, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: velocity!.y, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                     self.trayView.center = CGPoint(x: self.trayView.center.x ,y: self.trayCenterWhenClosed)
-
                     }, completion: { (completed) -> Void in
                         print("Direction > 0 block completed \(completed)")
                         self.trayStateTrueOpenFalseClose = true
@@ -85,7 +88,6 @@ class ViewController: UIViewController {
     
     
     @IBAction func onTapGesture(sender: UITapGestureRecognizer) {
-        print("TAPPED")
         if(trayStateTrueOpenFalseClose){//if open we close
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 self.trayView.center = CGPoint(x: self.trayView.center.x, y: self.trayCenterWhenClosed)
@@ -99,6 +101,40 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func onSmilyPanGesture(panGestureRecognizer: UIPanGestureRecognizer) {
     
+        // Absolute (x,y) coordinates in parent view's coordinate system
+        let point = panGestureRecognizer.locationInView(self.view)
+        
+        // Total translation (x,y) over time in parent view's coordinate system
+        let translation = panGestureRecognizer.translationInView(self.view)
+        
+        if panGestureRecognizer.state == UIGestureRecognizerState.Began {
+            print("BEGAN")
+            // Gesture recognizers know the view they are attached to
+            let imageView = panGestureRecognizer.view as! UIImageView
+            
+            // Create a new image view that has the same image as the one currently panning
+            newlyCreatedFace = UIImageView(image: imageView.image)
+            
+            // Add the new face to the tray's parent view.
+            view.addSubview(newlyCreatedFace)
+            
+            // Initialize the position of the new face.
+            newlyCreatedFace.center = imageView.center
+            
+            // Since the original face is in the tray, but the new face is in the
+            // main view, you have to offset the coordinates
+            newlyCreatedFace.center.y += trayView.frame.origin.y
+            
+        } else if panGestureRecognizer.state == UIGestureRecognizerState.Changed {
+            print("CHANGED")
+            self.newlyCreatedFace.center = point
+            
+        } else if panGestureRecognizer.state == UIGestureRecognizerState.Ended {
+            print("ENDED")
+            
+        }
+    }
 }
 
