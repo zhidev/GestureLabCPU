@@ -107,7 +107,7 @@ class ViewController: UIViewController {
         let point = panGestureRecognizer.locationInView(self.view)
         
         // Total translation (x,y) over time in parent view's coordinate system
-        let translation = panGestureRecognizer.translationInView(self.view)
+        //let translation = panGestureRecognizer.translationInView(self.view)
         
         if panGestureRecognizer.state == UIGestureRecognizerState.Began {
             print("BEGAN")
@@ -127,6 +127,11 @@ class ViewController: UIViewController {
             // main view, you have to offset the coordinates
             newlyCreatedFace.center.y += trayView.frame.origin.y
             
+            // Create gesture recognizer for the smily
+            let tapGestureRecognizer = UIPanGestureRecognizer(target: self, action: "onCustomSmilyPanGesture:")
+            
+            newlyCreatedFace.addGestureRecognizer(tapGestureRecognizer)
+            newlyCreatedFace.userInteractionEnabled = true
         } else if panGestureRecognizer.state == UIGestureRecognizerState.Changed {
             print("CHANGED")
             self.newlyCreatedFace.center = point
@@ -136,5 +141,27 @@ class ViewController: UIViewController {
             
         }
     }
+    
+    func onCustomSmilyPanGesture(panGestureRecognizer: UIPanGestureRecognizer) {
+        
+        // Absolute (x,y) coordinates in parent view
+        let point = panGestureRecognizer.locationInView(self.view)
+        
+        // Relative change in (x,y) coordinates from where gesture began.
+        //var translation = panGestureRecognizer.translationInView(view)
+        //var velocity = panGestureRecognizer.velocityInView(view)
+        
+        if panGestureRecognizer.state == UIGestureRecognizerState.Began {
+            print("CUSTOM PAN BEGAN")
+        } else if panGestureRecognizer.state == UIGestureRecognizerState.Changed {
+            print("CUSTOM PAN CHANGED")
+            self.newlyCreatedFace.center = point
+
+        } else if panGestureRecognizer.state == UIGestureRecognizerState.Ended {
+            
+        }
+    }
+
+    
 }
 
