@@ -50,6 +50,7 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="xCy-Mu-hpx" appends="YES" id="zzp-Sf-RFj"/>
+                                    <outletCollection property="gestureRecognizers" destination="LLq-km-qLP" appends="YES" id="mc8-GV-FaF"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -57,6 +58,7 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="downarrow" destination="wK5-6S-X5N" id="88i-mr-Kq5"/>
                         <outlet property="trayView" destination="w2q-NT-7Jd" id="CFE-yl-fGw"/>
                     </connections>
                 </viewController>
@@ -66,6 +68,11 @@
                         <action selector="onTrayPanGesture:" destination="BYZ-38-t0r" id="beD-1L-7KR"/>
                     </connections>
                 </panGestureRecognizer>
+                <tapGestureRecognizer id="LLq-km-qLP">
+                    <connections>
+                        <action selector="onTapGesture:" destination="BYZ-38-t0r" id="O96-6x-GMN"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="162" y="333"/>
         </scene>
